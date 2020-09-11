@@ -166,7 +166,7 @@ runtime {
             println "Setting Linux installer options"
             imageOptions += ['--icon', 'package/linux/' + project.name + developerRelease + '.png']
             installerOptions += [
-                    '--linux-menu-group', vendor,
+                    '--linux-menu-group', 'Game',
                     '--linux-shortcut'
             ]
 
