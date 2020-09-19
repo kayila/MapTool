@@ -42,7 +42,7 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew jpackage
     - name: Build ArchLinux package
-      uses: 2m/arch-pkgbuild-builder@v1
+      uses: 2m/arch-pkgbuild-builder@v1.16
       # This only even makes sense on Ubuntu.
       if: matrix.os == 'ubuntu-latest'
       env:
