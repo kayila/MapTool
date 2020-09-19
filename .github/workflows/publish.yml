@@ -48,14 +48,13 @@ jobs:
       run: |
           RPM_FILENAME=$(echo releases/maptool-*.rpm)
           echo $RPM_FILENAME
-          echo "::set-env name=RPM_FILENAME:$RPM_FILENAME"
+          echo "::set-env name=RPM_FILENAME::$RPM_FILENAME"
     - name: Build ArchLinux package
       uses: 2m/arch-pkgbuild-builder@v1.16
       # This only even makes sense on Ubuntu.
       if: matrix.os == 'ubuntu-latest'
       env:
         MAPTOOL_VERSION: ${{ github.event.release.tag_name }}
-        RPM_FILENAME: ${{ RPM_FILENAME }}
       with:
         target: 'pkgbuild'
         pkgname: 'package/archlinux/maptool'
