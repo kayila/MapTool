@@ -55,6 +55,7 @@ jobs:
       if: matrix.os == 'ubuntu-latest'
       env:
         MAPTOOL_VERSION: ${{ github.event.release.tag_name }}
+        RPM_FILENAME: ${{ RPM_FILENAME }}
       with:
         target: 'pkgbuild'
         pkgname: 'package/archlinux/maptool'
