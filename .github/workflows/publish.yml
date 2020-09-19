@@ -45,11 +45,11 @@ jobs:
       uses: 2m/arch-pkgbuild-builder@v1
       # This only even makes sense on Ubuntu.
       if: matrix.os == 'ubuntu-latest'
+      env:
+        MAPTOOL_VERSION: ${{ github.event.release.tag_name }}
       with:
         target: 'pkgbuild'
         pkgname: 'package/archlinux/maptool'
-    - name: Copy ArchLinux Release Files
-      run: cp maptool-*.pkg.tar.xz releases/
     - name: Build uberJar on Windows
       if: matrix.os == 'windows-latest'
       run: ./gradlew uberJar
@@ -106,11 +106,20 @@ jobs:
       #    / /___ / // / / // /_/ /_>  <  
       #   /_____//_//_/ /_/ \__,_//_/|_|  
       #
+    - name: KLUDGE - Define the ARCHLINUX_PKGVER variable for later
+      # WHY IS THERE NO WAY TO REPLACE STRINGS IN EXPRESSIONS?
+      # If there was, we could just replace '-' with '_' when this is used.
+      # https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions#functions
+      run: |
+          ARCHLINUX_PKGVER=${github_ref//-/_}
+          echo $ARCHLINUX_PKGVER
+          echo "::set-env name=ARCHLINUX_PKGVER::$ARCHLINUX_PKGVER"
     - name: Copy Linux Release Files
       if: matrix.os == 'ubuntu-latest'
       run: |
         cp releases/maptool*.x86_64.rpm releases/maptool-${{ github.event.release.tag_name }}-1.x86_64.rpm
         cp releases/maptool*_amd64.deb releases/maptool_${{ github.event.release.tag_name }}-1_amd64.deb
+        cp maptool-${ARCHLINUX_PKGVER}-1-x86_64.pkg.tar.xz releases/
     - name: Upload Linux RPM Release Asset
       id: upload-release-asset-rpm
       uses: actions/upload-release-asset@v1
@@ -132,6 +141,17 @@ jobs:
         upload_url: ${{ github.event.release.upload_url }}
         asset_path: releases/maptool_${{ github.event.release.tag_name }}-1_amd64.deb
         asset_name: maptool_${{ github.event.release.tag_name }}-amd64.deb
+        asset_content_type: application/octet-stream
+    - name: Upload ArchLinux Release Asset
+      id: upload-release-asset-arch
+      uses: actions/upload-release-asset@v1
+      if: matrix.os == 'ubuntu-latest'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: releases/maptool-${ARCHLINUX_PKGVER}-1-x86_64.pkg.tar.xz
+        asset_name: maptool-${ARCHLINUX_PKGVER}-1-x86_64.pkg.tar.xz
         asset_content_type: application/octet-stream
       #                               ____  _____
       #      ____ ___   ____ _ _____ / __ \/ ___/
