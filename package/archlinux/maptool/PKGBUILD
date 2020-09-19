@@ -1,14 +1,12 @@
 # Maintainer: Your Name <youremail@domain.com>
-pkgname=MapTool
+pkgname=maptool
 pkgver=${MAPTOOL_VERSION//-/_}
-#pkgver=1.8.0_beta.2
 pkgrel=1
 pkgdesc="Virtual Tabletop for playing roleplaying games."
 arch=(x86_64)
 url="https://github.com/RPTools/maptool"
 license=('AGPL3')
 source=("release/maptool-${pkgver//_/-}-$arch.rpm")
-#source=("https://github.com/RPTools/maptool/releases/download/${pkgver//_/-}/maptool-${pkgver//_/-}-$arch.rpm")
 md5sums=(SKIP)
 
 package() {
