@@ -41,6 +41,15 @@ jobs:
           ${{ runner.os }}-gradle-
     - name: Build with Gradle
       run: ./gradlew jpackage
+    - name: Build ArchLinux package
+      uses: 2m/arch-pkgbuild-builder@v1
+      # This only even makes sense on Ubuntu.
+      if: matrix.os == 'ubuntu-latest'
+      with:
+        target: 'pkgbuild'
+        pkgname: 'package/archlinux/maptool'
+    - name: Copy ArchLinux Release Files
+      run: cp maptool-*.pkg.tar.xz releases/
     - name: Build uberJar on Windows
       if: matrix.os == 'windows-latest'
       run: ./gradlew uberJar
