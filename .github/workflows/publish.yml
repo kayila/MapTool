@@ -41,6 +41,14 @@ jobs:
           ${{ runner.os }}-gradle-
     - name: Build with Gradle
       run: ./gradlew jpackage
+    - name: Store the RPM filename for ArchLinux package build later
+      # This is put here to avoid problems if build.gradle ever changes
+      # in a way that affects the filename of the .rpm file.
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+          RPM_FILENAME=$(echo releases/maptool-*.rpm)
+          echo $RPM_FILENAME
+          echo "::set-env name=RPM_FILENAME:$RPM_FILENAME"
     - name: Build ArchLinux package
       uses: 2m/arch-pkgbuild-builder@v1.16
       # This only even makes sense on Ubuntu.
