@@ -110,6 +110,7 @@ jobs:
       # WHY IS THERE NO WAY TO REPLACE STRINGS IN EXPRESSIONS?
       # If there was, we could just replace '-' with '_' when this is used.
       # https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions#functions
+      if: matrix.os == 'ubuntu-latest'
       run: |
           ARCHLINUX_PKGVER=${github_ref//-/_}
           echo $ARCHLINUX_PKGVER
