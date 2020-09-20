@@ -132,7 +132,7 @@ jobs:
       run: |
         cp releases/maptool*.x86_64.rpm releases/maptool-${{ github.event.release.tag_name }}-1.x86_64.rpm
         cp releases/maptool*_amd64.deb releases/maptool_${{ github.event.release.tag_name }}-1_amd64.deb
-        cp maptool-${ARCHLINUX_PKGVER}-1-x86_64.pkg.tar.zst releases/
+        cp package/archlinux/maptool/maptool-${ARCHLINUX_PKGVER}-1-x86_64.pkg.tar.zst releases/
     - name: Upload Linux RPM Release Asset
       id: upload-release-asset-rpm
       uses: actions/upload-release-asset@v1
