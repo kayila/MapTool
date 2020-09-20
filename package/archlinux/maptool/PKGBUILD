@@ -6,7 +6,7 @@ pkgdesc="Virtual Tabletop for playing roleplaying games."
 arch=(x86_64)
 url="https://github.com/RPTools/maptool"
 license=('AGPL3')
-source=("${RPM_FILENAME}")
+source=("maptool.rpm")
 md5sums=(SKIP)
 install=maptool.install
 

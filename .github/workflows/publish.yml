@@ -43,9 +43,7 @@ jobs:
       run: ./gradlew jpackage
     - name: Copy the RPM to the location required to build the ArchLinux package
       if: matrix.os == 'ubuntu-latest'
-      run: |
-          echo "::set-env name=RPM_FILENAME::$(echo releases/maptool-*.rpm)"
-          cp releases/maptool-*.rpm package/archlinux/maptool/
+      run: cp releases/maptool-*.rpm package/archlinux/maptool/maptool.rpm
     - name: Build ArchLinux package
       uses: 2m/arch-pkgbuild-builder@v1.16
       # This only even makes sense on Ubuntu.
@@ -55,9 +53,6 @@ jobs:
       with:
         target: 'pkgbuild'
         pkgname: 'package/archlinux/maptool'
-    - name: DEBUG - try to determine ArchLinux package location
-      if: matrix.os == 'ubuntu-latest'
-      run: find
     - name: Build uberJar on Windows
       if: matrix.os == 'windows-latest'
       run: ./gradlew uberJar
@@ -114,20 +109,12 @@ jobs:
       #    / /___ / // / / // /_/ /_>  <
       #   /_____//_//_/ /_/ \__,_//_/|_|
       #
-    - name: KLUDGE - Define the ARCHLINUX_PKGVER variable for later
-      # WHY IS THERE NO WAY TO REPLACE STRINGS IN EXPRESSIONS?
-      # If there was, we could just replace '-' with '_' when this is used.
-      # https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions#functions
-      if: matrix.os == 'ubuntu-latest'
-      env:
-          TAG_NAME: ${{ github.event.release.tag_name }}
-      run: echo "::set-env name=ARCHLINUX_PKGVER::${TAG_NAME//-/_}"
     - name: Copy Linux Release Files
       if: matrix.os == 'ubuntu-latest'
       run: |
-        cp releases/maptool*.x86_64.rpm releases/maptool-${{ github.event.release.tag_name }}-1.x86_64.rpm
-        cp releases/maptool*_amd64.deb releases/maptool_${{ github.event.release.tag_name }}-1_amd64.deb
-        cp package/archlinux/maptool/maptool-${ARCHLINUX_PKGVER}-1-x86_64.pkg.tar.zst releases/
+        cp releases/maptool*.x86_64.rpm releases/maptool-${{ github.event.release.tag_name }}.x86_64.rpm
+        cp releases/maptool*_amd64.deb releases/maptool_${{ github.event.release.tag_name }}_amd64.deb
+        cp package/archlinux/maptool/maptool-*-x86_64.pkg.tar.zst releases/maptool-$(( github.event.release.tag_name }}-x86_64.pkg.tar.zst
     - name: Upload Linux RPM Release Asset
       id: upload-release-asset-rpm
       uses: actions/upload-release-asset@v1
@@ -136,7 +123,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ github.event.release.upload_url }}
-        asset_path: releases/maptool-${{ github.event.release.tag_name }}-1.x86_64.rpm
+        asset_path: releases/maptool-${{ github.event.release.tag_name }}.x86_64.rpm
         asset_name: maptool-${{ github.event.release.tag_name }}-x86_64.rpm
         asset_content_type: application/octet-stream
     - name: Upload Linux DEB Release Asset
@@ -147,7 +134,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ github.event.release.upload_url }}
-        asset_path: releases/maptool_${{ github.event.release.tag_name }}-1_amd64.deb
+        asset_path: releases/maptool_${{ github.event.release.tag_name }}_amd64.deb
         asset_name: maptool_${{ github.event.release.tag_name }}-amd64.deb
         asset_content_type: application/octet-stream
     - name: Upload ArchLinux Release Asset
@@ -158,8 +145,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ github.event.release.upload_url }}
-        asset_path: releases/maptool-${{ env.ARCHLINUX_PKGVER }}-1-x86_64.pkg.tar.zst
-        asset_name: maptool-${{ env.ARCHLINUX_PKGVER }}-1-x86_64.pkg.tar.zst
+        asset_path: releases/maptool-${{ github.event.release.tag_name }}-x86_64.pkg.tar.zst
+        asset_name: maptool-${{ github.event.release.tag_name }}-x86_64.pkg.tar.zst
         asset_content_type: application/octet-stream
       #                               ____  _____
       #      ____ ___   ____ _ _____ / __ \/ ___/
