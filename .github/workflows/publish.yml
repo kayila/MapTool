@@ -163,8 +163,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ github.event.release.upload_url }}
-        asset_path: releases/maptool-${{ ARCHLINUX_PKGVER }}-1-x86_64.pkg.tar.zst
-        asset_name: maptool-${{ ARCHLINUX_PKGVER }}-1-x86_64.pkg.tar.zst
+        asset_path: releases/maptool-${{ env.ARCHLINUX_PKGVER }}-1-x86_64.pkg.tar.zst
+        asset_name: maptool-${{ env.ARCHLINUX_PKGVER }}-1-x86_64.pkg.tar.zst
         asset_content_type: application/octet-stream
       #                               ____  _____
       #      ____ ___   ____ _ _____ / __ \/ ___/
