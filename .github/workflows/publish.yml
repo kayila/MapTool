@@ -118,8 +118,10 @@ jobs:
       # If there was, we could just replace '-' with '_' when this is used.
       # https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions#functions
       if: matrix.os == 'ubuntu-latest'
+      env:
+          TAG_NAME: ${{ github.event.release.tag_name }}
       run: |
-          ARCHLINUX_PKGVER=${github_ref//-/_}
+          ARCHLINUX_PKGVER=${TAG_NAME//-/_}
           echo $ARCHLINUX_PKGVER
           echo "::set-env name=ARCHLINUX_PKGVER::$ARCHLINUX_PKGVER"
     - name: Copy Linux Release Files
