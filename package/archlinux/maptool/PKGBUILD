@@ -8,7 +8,7 @@ url="https://github.com/RPTools/maptool"
 license=('AGPL3')
 source=("${RPM_FILENAME}")
 md5sums=(SKIP)
-install=maptool
+install=maptool.install
 
 package() {
     cp -r opt/ "$pkgdir/"
