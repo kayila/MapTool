@@ -164,10 +164,10 @@ runtime {
 
         if (osdetector.os.is('linux')) {
             println "Setting Linux installer options"
-            imageOptions += ['--icon', 'package/linux/' + project.name + developerRelease + '.png']
             installerOptions += [
                     '--linux-menu-group', 'Game',
-                    '--linux-shortcut'
+                    '--linux-shortcut',
+                    '--icon', 'package/linux/' + project.name + developerRelease + '.png'
             ]
 
             if (installerType == 'deb') {
