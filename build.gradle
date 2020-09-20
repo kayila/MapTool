@@ -162,7 +162,7 @@ runtime {
             ]
         }
 
-        if (osdetector.os.is('unix')) {
+        if (osdetector.os.is('linux')) {
             println "Setting Linux installer options"
             imageOptions += ['--icon', 'package/linux/' + project.name + developerRelease + '.png']
             installerOptions += [
