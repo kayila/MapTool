@@ -57,6 +57,9 @@ jobs:
       with:
         target: 'pkgbuild'
         pkgname: 'package/archlinux/maptool'
+    - name: DEBUG - try to determine ArchLinux package location
+      if: matrix.os == 'ubuntu-latest'
+      run: find
     - name: Build uberJar on Windows
       if: matrix.os == 'windows-latest'
       run: ./gradlew uberJar
