@@ -6,5 +6,4 @@ post_install() {
 pre_remove() {
     xdg-desktop-menu uninstall /opt/maptool/lib/maptool-MapTool.desktop
     xdg-mime uninstall /opt/maptool/lib/maptool-MapTool-MimeInfo.xml
-    uninstall_default_mime_handler maptool-MapTool.desktop application/zip
 }
